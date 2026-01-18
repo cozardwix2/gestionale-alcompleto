@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gestionale Alcompleto</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-orb orb-1" aria-hidden="true"></div>
+    <div class="bg-orb orb-2" aria-hidden="true"></div>
+    <main class="app">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">CRM Lead Strutture</p>
+          <h1>Pipeline Lead</h1>
+          <a class="text-link" href="confermati.html">Vai ai confermati</a>
+        </div>
+        <div class="user-area">
+          <span id="userLabel" class="user-label">Non autenticato</span>
+          <button id="logoutBtn" class="ghost-btn" type="button">Esci</button>
+        </div>
+      </header>
+
+      <section id="loginView" class="card">
+        <h2>Accedi</h2>
+        <p class="muted">Usa le credenziali personali per vedere solo i tuoi lead.</p>
+        <form id="loginForm" class="form-grid">
+          <label>
+            Email
+            <input id="email" type="email" placeholder="nome@azienda.it" required />
+          </label>
+          <label>
+            Password
+            <input id="password" type="password" placeholder="••••••••" required />
+          </label>
+          <button class="primary-btn" type="submit">Entra</button>
+          <p id="loginError" class="error-text" role="alert"></p>
+        </form>
+      </section>
+
+      <section id="appView" class="stack" hidden>
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2>Carica nuovo lead</h2>
+              <p class="muted">Ogni lead resta solo nella tua pagina personale.</p>
+            </div>
+          </div>
+          <form id="leadForm" class="form-grid">
+            <input id="editingId" type="hidden" />
+            <label>
+              Nome struttura
+              <input id="nomeStruttura" type="text" required />
+            </label>
+            <label>
+              Telefono
+              <input id="telefono" type="tel" required />
+            </label>
+            <label>
+              Occupazione
+              <input id="occupazione" type="text" required />
+            </label>
+            <label>
+              Prezzo medio
+              <input id="prezzoMedio" type="text" required />
+            </label>
+            <label>
+              Altre strutture
+              <input id="altreStrutture" type="text" required />
+            </label>
+            <label>
+              Info
+              <input id="info" type="text" required />
+            </label>
+            <label>
+              Città
+              <input id="citta" type="text" required />
+            </label>
+            <label>
+              Link Booking
+              <input id="bookingLink" type="url" placeholder="https://..." required />
+            </label>
+            <label>
+              Caricato da
+              <select id="caricatoDa" required>
+                <option value="Davide">Davide</option>
+                <option value="Alessio">Alessio</option>
+                <option value="Lorenzo">Lorenzo</option>
+              </select>
+            </label>
+            <div class="form-actions">
+              <button id="saveLeadBtn" class="primary-btn" type="submit">Salva lead</button>
+              <button id="cancelEditBtn" class="ghost-btn" type="button" hidden>Annulla</button>
+            </div>
+            <p id="leadError" class="error-text" role="alert"></p>
+          </form>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2>I tuoi lead</h2>
+              <p class="muted">Aggiorna lo stato per colorare la riga.</p>
+            </div>
+            <div class="card-actions">
+              <label class="filter-label">
+                Mostra
+                <select id="filtroPersona">
+                  <option value="tutti">Tutti</option>
+                  <option value="Davide">Davide</option>
+                  <option value="Alessio">Alessio</option>
+                  <option value="Lorenzo">Lorenzo</option>
+                </select>
+              </label>
+              <button id="refreshBtn" class="ghost-btn" type="button">Aggiorna</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Struttura</th>
+                  <th>Telefono</th>
+                  <th>Occupazione</th>
+                  <th>Prezzo medio</th>
+                  <th>Altre strutture</th>
+                  <th>Info</th>
+                  <th>Città</th>
+                  <th>Booking</th>
+                  <th>Caricato da</th>
+                  <th>Stato</th>
+                  <th>Azioni</th>
+                </tr>
+              </thead>
+              <tbody id="leadTableBody"></tbody>
+            </table>
+          </div>
+          <p id="tableEmpty" class="muted">Nessun lead inserito.</p>
+        </section>
+      </section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

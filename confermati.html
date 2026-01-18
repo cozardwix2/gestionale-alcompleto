@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gestionale Alcompleto</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-orb orb-1" aria-hidden="true"></div>
+    <div class="bg-orb orb-2" aria-hidden="true"></div>
+    <main class="app">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">CRM Lead Strutture</p>
+          <h1>Lead Confermati</h1>
+          <a class="text-link" href="index.html">Torna alla pipeline</a>
+        </div>
+        <div class="user-area">
+          <span id="userLabel" class="user-label">Non autenticato</span>
+          <button id="logoutBtn" class="ghost-btn" type="button">Esci</button>
+        </div>
+      </header>
+
+      <section id="loginView" class="card">
+        <h2>Accedi</h2>
+        <p class="muted">Usa le credenziali personali per continuare.</p>
+        <form id="loginForm" class="form-grid">
+          <label>
+            Email
+            <input id="email" type="email" placeholder="nome@azienda.it" required />
+          </label>
+          <label>
+            Password
+            <input id="password" type="password" placeholder="••••••••" required />
+          </label>
+          <button class="primary-btn" type="submit">Entra</button>
+          <p id="loginError" class="error-text" role="alert"></p>
+        </form>
+      </section>
+
+      <section id="appView" class="stack" hidden>
+        <section class="card">
+          <h2>Solo lead confermati</h2>
+          <p class="muted">Ogni scheda e' modificabile e si salva nel database.</p>
+        </section>
+
+        <section class="lead-grid" id="leadGrid"></section>
+        <p id="emptyState" class="muted">Nessun lead confermato.</p>
+      </section>
+    </main>
+
+    <script type="module" src="confermati.js"></script>
+  </body>
+</html>
