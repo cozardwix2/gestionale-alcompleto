@@ -95,6 +95,7 @@ function startEdit(lead) {
   document.getElementById("altreStrutture").value = lead.altre_strutture;
   document.getElementById("info").value = lead.info;
   document.getElementById("citta").value = lead.citta;
+  document.getElementById("bookingLink").value = lead.booking_link || "";
   caricatoDaSelect.value = lead.caricato_da;
   saveLeadBtn.textContent = "Salva modifiche";
   cancelEditBtn.hidden = false;
