@@ -157,17 +157,21 @@ function renderTableRows(rows) {
     }
 
     tr.innerHTML = `
-      <td>${lead.nome_struttura}</td>
-      <td>${lead.telefono}</td>
-      <td>${lead.occupazione}</td>
-      <td>${lead.prezzo_medio}</td>
-      <td>${lead.altre_strutture}</td>
-      <td>${lead.info}</td>
-      <td>${lead.citta}</td>
-      <td>${lead.booking_link ? `<a href="${lead.booking_link}" target="_blank" rel="noopener">Apri</a>` : ""}</td>
-      <td>${lead.caricato_da}</td>
-      <td></td>
-      <td></td>
+      <td data-label="Struttura">${lead.nome_struttura}</td>
+      <td data-label="Telefono">${lead.telefono}</td>
+      <td data-label="Occupazione">${lead.occupazione}</td>
+      <td data-label="Prezzo medio">${lead.prezzo_medio}</td>
+      <td data-label="Altre strutture">${lead.altre_strutture}</td>
+      <td data-label="Info">${lead.info}</td>
+      <td data-label="Città">${lead.citta}</td>
+      <td data-label="Booking">${
+        lead.booking_link
+          ? `<a href="${lead.booking_link}" target="_blank" rel="noopener">Apri</a>`
+          : ""
+      }</td>
+      <td data-label="Caricato da">${lead.caricato_da}</td>
+      <td data-label="Stato"></td>
+      <td data-label="Azioni"></td>
     `;
 
     const statusCell = tr.querySelector("td:nth-last-child(2)");
