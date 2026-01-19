@@ -28,6 +28,7 @@ const userLabel = document.getElementById("userLabel");
 const logoutBtn = document.getElementById("logoutBtn");
 const leadGrid = document.getElementById("leadGrid");
 const emptyState = document.getElementById("emptyState");
+const searchConfermati = document.getElementById("searchConfermati");
 
 function prettyName(email) {
   if (!email) return "";
@@ -369,6 +370,28 @@ function renderCard(lead) {
   return card;
 }
 
+function matchesSearch(lead, queryText) {
+  if (!queryText) return true;
+  return [
+    lead.nome_struttura,
+    lead.telefono,
+    lead.caricato_da,
+    lead.tipo_tariffa,
+    lead.report_statistiche,
+    lead.report_incassi,
+    lead.report_statistiche_inviato,
+    lead.report_incassi_inviato,
+    lead.data_attivazione,
+    lead.data_prossimo_report_statistiche,
+    lead.data_prossimo_report_incassi,
+    lead.invio_contratto,
+    lead.ultima_data_contatto,
+    lead.info_extra,
+  ]
+    .filter(Boolean)
+    .some((value) => String(value).toLowerCase().includes(queryText));
+}
+
 async function loadConfermati() {
   const { data, error } = await client
     .from("leads")
@@ -385,13 +408,18 @@ async function loadConfermati() {
   }
 
   leadGrid.innerHTML = "";
-  if (!data || !data.length) {
+  const queryText = searchConfermati.value.trim().toLowerCase();
+  const filtered = (data || []).filter((lead) => matchesSearch(lead, queryText));
+  if (!filtered.length) {
     emptyState.hidden = false;
+    emptyState.textContent = queryText
+      ? "Nessun risultato trovato."
+      : "Nessun lead confermato.";
     return;
   }
 
   emptyState.hidden = true;
-  data.forEach((lead) => leadGrid.append(renderCard(lead)));
+  filtered.forEach((lead) => leadGrid.append(renderCard(lead)));
 }
 
 client.auth.onAuthStateChange((_event, session) => {
@@ -403,6 +431,7 @@ client.auth.onAuthStateChange((_event, session) => {
 
 loginForm.addEventListener("submit", handleLogin);
 logoutBtn.addEventListener("click", handleLogout);
+searchConfermati.addEventListener("input", loadConfermati);
 
 const { data } = await client.auth.getSession();
 setView(data.session);

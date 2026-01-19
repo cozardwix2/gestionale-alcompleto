@@ -30,6 +30,8 @@ const userLabel = document.getElementById("userLabel");
 const logoutBtn = document.getElementById("logoutBtn");
 const refreshBtn = document.getElementById("refreshBtn");
 const filtroPersona = document.getElementById("filtroPersona");
+const filtroStato = document.getElementById("filtroStato");
+const searchInput = document.getElementById("searchInput");
 const caricatoDaSelect = document.getElementById("caricatoDa");
 const editingId = document.getElementById("editingId");
 const saveLeadBtn = document.getElementById("saveLeadBtn");
@@ -145,6 +147,11 @@ function renderTableRows(rows) {
   leadTableBody.innerHTML = "";
   if (!rows.length) {
     tableEmpty.hidden = false;
+    if (searchInput.value.trim()) {
+      tableEmpty.textContent = "Nessun risultato trovato.";
+    } else {
+      tableEmpty.textContent = "Nessun lead inserito.";
+    }
     return;
   }
 
@@ -234,19 +241,12 @@ function renderTableRows(rows) {
 }
 
 async function loadLeads() {
-  let query = client
+  const { data, error } = await client
     .from("leads")
     .select(
       "id, nome_struttura, telefono, occupazione, prezzo_medio, altre_strutture, info, citta, booking_link, caricato_da, status"
     )
     .order("created_at", { ascending: false });
-
-  const filtro = filtroPersona.value;
-  if (filtro !== "tutti") {
-    query = query.eq("caricato_da", filtro);
-  }
-
-  const { data, error } = await query;
 
   if (error) {
     tableEmpty.hidden = false;
@@ -254,7 +254,39 @@ async function loadLeads() {
     return;
   }
 
-  renderTableRows(data || []);
+  let rows = data || [];
+
+  const filtroPersonaValue = filtroPersona.value;
+  if (filtroPersonaValue !== "tutti") {
+    rows = rows.filter((lead) => lead.caricato_da === filtroPersonaValue);
+  }
+
+  const filtroStatoValue = filtroStato.value;
+  if (filtroStatoValue !== "tutti") {
+    rows = rows.filter((lead) => lead.status === filtroStatoValue);
+  }
+
+  const queryText = searchInput.value.trim().toLowerCase();
+  if (queryText) {
+    rows = rows.filter((lead) =>
+      [
+        lead.nome_struttura,
+        lead.telefono,
+        lead.occupazione,
+        lead.prezzo_medio,
+        lead.altre_strutture,
+        lead.info,
+        lead.citta,
+        lead.booking_link,
+        lead.caricato_da,
+        lead.status,
+      ]
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(queryText))
+    );
+  }
+
+  renderTableRows(rows);
 }
 
 client.auth.onAuthStateChange((_event, session) => {
@@ -269,6 +301,8 @@ leadForm.addEventListener("submit", handleLeadSubmit);
 logoutBtn.addEventListener("click", handleLogout);
 refreshBtn.addEventListener("click", loadLeads);
 filtroPersona.addEventListener("change", loadLeads);
+filtroStato.addEventListener("change", loadLeads);
+searchInput.addEventListener("input", loadLeads);
 cancelEditBtn.addEventListener("click", clearLeadForm);
 
 const { data } = await client.auth.getSession();

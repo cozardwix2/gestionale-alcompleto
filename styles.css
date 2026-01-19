@@ -143,6 +143,10 @@ main.app {
   font-size: 0.85rem;
 }
 
+.search-label {
+  margin-top: 12px;
+}
+
 .stack {
   display: grid;
   gap: 26px;
