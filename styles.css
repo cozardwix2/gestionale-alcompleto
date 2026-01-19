@@ -46,7 +46,7 @@ main.app {
   position: relative;
   z-index: 1;
   padding: 48px 6vw 80px;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -118,7 +118,7 @@ main.app {
   padding: 28px;
   box-shadow: var(--shadow);
   width: 100%;
-  max-width: 1100px;
+  max-width: 1360px;
   margin: 0 auto;
 }
 
@@ -239,10 +239,6 @@ textarea:focus {
   color: #b02b2b;
   min-height: 20px;
   margin: 0;
-}
-
-.table-wrap {
-  overflow-x: auto;
 }
 
 table {
