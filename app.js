@@ -129,6 +129,23 @@ async function handleLeadSubmit(event) {
   const isEditing = Boolean(editingId.value);
   let error;
   if (isEditing) {
+    const { data: existing } = await client
+      .from("leads")
+      .select("id, nome_struttura, caricato_da")
+      .eq("telefono", payload.telefono)
+      .neq("id", editingId.value)
+      .limit(3);
+    if (existing && existing.length) {
+      const matches = existing
+        .map((lead) => `${lead.nome_struttura} (${lead.caricato_da || "senza nome"})`)
+        .join(", ");
+      const confirmed = window.confirm(
+        `Questo numero e' gia presente su: ${matches}. Vuoi procedere comunque?`
+      );
+      if (!confirmed) {
+        return;
+      }
+    }
     ({ error } = await client.from("leads").update(payload).eq("id", editingId.value));
   } else {
     const { data: existing } = await client
