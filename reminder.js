@@ -171,7 +171,16 @@ async function loadReminders() {
     columns[person].innerHTML = "";
   });
 
-  (data || []).forEach((reminder) => {
+  const sorted = (data || []).slice().sort((a, b) => {
+    const dueA = getDueDate(a);
+    const dueB = getDueDate(b);
+    if (!dueA && !dueB) return 0;
+    if (!dueA) return 1;
+    if (!dueB) return -1;
+    return dueA.getTime() - dueB.getTime();
+  });
+
+  sorted.forEach((reminder) => {
     const column = columns[reminder.assegnato_a];
     if (column) {
       column.append(renderReminder(reminder));
