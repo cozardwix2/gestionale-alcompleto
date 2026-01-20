@@ -436,6 +436,10 @@ tr.status-confermato {
   z-index: 5;
 }
 
+.modal[hidden] {
+  display: none;
+}
+
 .modal-card {
   width: min(520px, 100%);
   background: #fff;
