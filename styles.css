@@ -38,6 +38,78 @@ body.theme-dark {
   background: radial-gradient(circle at top, #2a2621 0%, #191611 45%, #13110e 100%);
 }
 
+body.theme-dark .card,
+body.theme-dark .reminder-column,
+body.theme-dark .lead-card,
+body.theme-dark .modal-card {
+  background: #211e19;
+  color: var(--ink);
+}
+
+body.theme-dark .reminder-card {
+  border-color: #3a342c;
+}
+
+body.theme-dark input,
+body.theme-dark select,
+body.theme-dark textarea {
+  background: #2a2621;
+  color: var(--ink);
+  border-color: #4a4339;
+}
+
+body.theme-dark input::placeholder,
+body.theme-dark textarea::placeholder {
+  color: #a4978a;
+}
+
+body.theme-dark th,
+body.theme-dark td {
+  color: var(--ink);
+}
+
+body.theme-dark tr.status-rifiutato,
+body.theme-dark tr.status-interessato,
+body.theme-dark tr.status-confermato {
+  color: #1d1a18;
+}
+
+body.theme-dark .reminder-far {
+  background: #3a342c;
+}
+
+body.theme-dark .reminder-soon {
+  background: #6b5b2a;
+  color: #1b160e;
+}
+
+body.theme-dark .reminder-urgent {
+  background: #7a3a3a;
+  color: #1b0f0f;
+}
+
+body.theme-dark .reminder-overdue {
+  background: #5b3a7a;
+  color: #1b0f2a;
+}
+
+body.theme-dark .reminder-done {
+  background: #2f5a3a;
+  color: #e9f6ee;
+}
+
+body.theme-dark .month-pill {
+  background: #2a2621;
+  border-color: #4a4339;
+  color: var(--ink);
+}
+
+body.theme-dark .month-pill.active {
+  background: #2f5a3a;
+  border-color: #6bbf7a;
+  color: #e9f6ee;
+}
+
 h1,
 h2 {
   font-family: "Fraunces", serif;
