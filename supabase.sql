@@ -36,6 +36,7 @@ create table if not exists public.reminders (
   owner_id uuid not null default auth.uid(),
   testo text not null,
   data_scadenza date not null,
+  ora_scadenza time,
   stato text not null default 'da_fare',
   assegnato_a text not null,
   created_at timestamptz not null default now()

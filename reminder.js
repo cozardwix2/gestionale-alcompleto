@@ -21,6 +21,7 @@ const reminderForm = document.getElementById("reminderForm");
 const reminderId = document.getElementById("reminderId");
 const reminderText = document.getElementById("reminderText");
 const reminderDate = document.getElementById("reminderDate");
+const reminderTime = document.getElementById("reminderTime");
 const reminderOwner = document.getElementById("reminderOwner");
 const reminderStatus = document.getElementById("reminderStatus");
 const saveReminderBtn = document.getElementById("saveReminderBtn");
@@ -58,6 +59,7 @@ function openModal(reminder = null) {
     reminderId.value = reminder.id;
     reminderText.value = reminder.testo;
     reminderDate.value = reminder.data_scadenza;
+    reminderTime.value = reminder.ora_scadenza || "";
     reminderOwner.value = reminder.assegnato_a;
     reminderStatus.value = reminder.stato;
     saveReminderBtn.textContent = "Salva modifiche";
@@ -77,20 +79,25 @@ function closeModal() {
   reminderId.value = "";
 }
 
-function dayDifference(dateStr) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const due = new Date(dateStr);
-  due.setHours(0, 0, 0, 0);
-  return Math.round((due - today) / 86400000);
+function getDueDate(reminder) {
+  const date = reminder.data_scadenza;
+  if (!date) return null;
+  if (reminder.ora_scadenza) {
+    return new Date(`${date}T${reminder.ora_scadenza}`);
+  }
+  return new Date(`${date}T23:59:59`);
 }
 
 function getReminderClass(reminder) {
   if (reminder.stato === "completato") return "reminder-done";
-  const diff = dayDifference(reminder.data_scadenza);
-  if (diff < 0) return "reminder-overdue";
-  if (diff <= 1) return "reminder-urgent";
-  if (diff <= 3) return "reminder-soon";
+  const due = getDueDate(reminder);
+  if (!due) return "reminder-far";
+  const now = new Date();
+  const diffMs = due.getTime() - now.getTime();
+  if (diffMs < 0) return "reminder-overdue";
+  const diffDays = diffMs / 86400000;
+  if (diffDays <= 1) return "reminder-urgent";
+  if (diffDays <= 3) return "reminder-soon";
   return "reminder-far";
 }
 
@@ -99,6 +106,13 @@ function formatDateIt(value) {
   const parts = value.split("-");
   if (parts.length !== 3) return value;
   return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
+
+function formatTime(value) {
+  if (!value) return "";
+  const parts = value.split(":");
+  if (parts.length < 2) return value;
+  return `${parts[0]}:${parts[1]}`;
 }
 
 function renderReminder(reminder) {
@@ -110,7 +124,8 @@ function renderReminder(reminder) {
 
   const meta = document.createElement("div");
   meta.className = "reminder-meta";
-  meta.textContent = `Scadenza: ${formatDateIt(reminder.data_scadenza)} · Stato: ${
+  const timeLabel = reminder.ora_scadenza ? ` ${formatTime(reminder.ora_scadenza)}` : "";
+  meta.textContent = `Scadenza: ${formatDateIt(reminder.data_scadenza)}${timeLabel} · Stato: ${
     reminder.stato === "completato" ? "Completato" : "Da fare"
   }`;
 
@@ -145,7 +160,7 @@ function renderReminder(reminder) {
 async function loadReminders() {
   const { data, error } = await client
     .from("reminders")
-    .select("id, testo, data_scadenza, stato, assegnato_a")
+    .select("id, testo, data_scadenza, ora_scadenza, stato, assegnato_a")
     .order("data_scadenza", { ascending: true });
 
   if (error) {
@@ -196,6 +211,7 @@ async function handleReminderSubmit(event) {
   const payload = {
     testo: reminderText.value.trim(),
     data_scadenza: reminderDate.value,
+    ora_scadenza: reminderTime.value || null,
     stato: reminderStatus.value,
     assegnato_a: reminderOwner.value,
   };
