@@ -373,11 +373,13 @@ tr.status-confermato {
   box-shadow: var(--shadow);
   display: grid;
   gap: 14px;
+  align-content: start;
 }
 
 .reminder-list {
   display: grid;
   gap: 12px;
+  align-content: start;
 }
 
 .reminder-card {
