@@ -68,10 +68,22 @@ body.theme-dark td {
   color: var(--ink);
 }
 
+body.theme-dark a {
+  color: #f4b183;
+}
+
 body.theme-dark tr.status-rifiutato,
 body.theme-dark tr.status-interessato,
 body.theme-dark tr.status-confermato {
-  color: #1d1a18;
+  color: #11100d;
+}
+
+body.theme-dark .reminder-far,
+body.theme-dark .reminder-soon,
+body.theme-dark .reminder-urgent,
+body.theme-dark .reminder-overdue,
+body.theme-dark .reminder-done {
+  color: #f7f2eb;
 }
 
 body.theme-dark .reminder-far {
@@ -79,23 +91,19 @@ body.theme-dark .reminder-far {
 }
 
 body.theme-dark .reminder-soon {
-  background: #6b5b2a;
-  color: #1b160e;
+  background: #8a6f1f;
 }
 
 body.theme-dark .reminder-urgent {
-  background: #7a3a3a;
-  color: #1b0f0f;
+  background: #8a3232;
 }
 
 body.theme-dark .reminder-overdue {
-  background: #5b3a7a;
-  color: #1b0f2a;
+  background: #5a2f7a;
 }
 
 body.theme-dark .reminder-done {
   background: #2f5a3a;
-  color: #e9f6ee;
 }
 
 body.theme-dark .month-pill {
@@ -108,6 +116,39 @@ body.theme-dark .month-pill.active {
   background: #2f5a3a;
   border-color: #6bbf7a;
   color: #e9f6ee;
+}
+
+body.theme-dark .month-panel {
+  background: #1c1a16;
+  border-color: #3a342c;
+  color: var(--ink);
+}
+
+body.theme-dark .month-panel input {
+  background: #2a2621;
+  color: var(--ink);
+  border-color: #4a4339;
+}
+
+body.theme-dark .month-panel .ghost-btn {
+  border-color: #5a5248;
+  color: var(--ink);
+}
+
+body.theme-dark .month-panel .primary-btn {
+  color: #1b1208;
+}
+
+body.theme-dark tr.status-rifiutato {
+  background: #6a2c2c;
+}
+
+body.theme-dark tr.status-interessato {
+  background: #7a5f12;
+}
+
+body.theme-dark tr.status-confermato {
+  background: #2f6a3a;
 }
 
 h1,
