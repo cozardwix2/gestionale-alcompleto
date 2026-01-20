@@ -108,6 +108,12 @@ main.app {
   text-decoration: none;
 }
 
+.header-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .text-link:hover {
   text-decoration: underline;
 }
@@ -352,6 +358,88 @@ tr.status-confermato {
   margin: 8px 0 14px;
   font-size: 0.9rem;
   color: var(--muted);
+}
+
+.reminder-columns {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.reminder-column {
+  background: #fff;
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 14px;
+}
+
+.reminder-list {
+  display: grid;
+  gap: 12px;
+}
+
+.reminder-card {
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid #e6dbcf;
+  background: #f7f2eb;
+  display: grid;
+  gap: 8px;
+}
+
+.reminder-card h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.reminder-meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.reminder-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.reminder-far {
+  background: #efefef;
+}
+
+.reminder-soon {
+  background: #fff4c2;
+}
+
+.reminder-overdue {
+  background: #ffe1e1;
+}
+
+.reminder-done {
+  background: #def6de;
+  border-color: #7bc17b;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 18, 14, 0.45);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  z-index: 5;
+}
+
+.modal-card {
+  width: min(520px, 100%);
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 12px;
 }
 
 .month-panel {

@@ -31,6 +31,39 @@ create table if not exists public.leads (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.reminders (
+  id uuid primary key default gen_random_uuid(),
+  owner_id uuid not null default auth.uid(),
+  testo text not null,
+  data_scadenza date not null,
+  stato text not null default 'da_fare',
+  assegnato_a text not null,
+  created_at timestamptz not null default now()
+);
+
+alter table public.reminders enable row level security;
+
+create policy "Reminder visibili solo a utenti autorizzati"
+  on public.reminders
+  for select
+  using (auth.email() in ('davide281100@icloud.com', 'alessiogreco99@gmail.com'));
+
+create policy "Reminder inseriti solo da utenti autorizzati"
+  on public.reminders
+  for insert
+  with check (auth.email() in ('davide281100@icloud.com', 'alessiogreco99@gmail.com'));
+
+create policy "Reminder aggiornati solo da utenti autorizzati"
+  on public.reminders
+  for update
+  using (auth.email() in ('davide281100@icloud.com', 'alessiogreco99@gmail.com'))
+  with check (auth.email() in ('davide281100@icloud.com', 'alessiogreco99@gmail.com'));
+
+create policy "Reminder eliminati solo da utenti autorizzati"
+  on public.reminders
+  for delete
+  using (auth.email() in ('davide281100@icloud.com', 'alessiogreco99@gmail.com'));
+
 alter table public.leads enable row level security;
 
 create policy "Lead visibili a tutti gli utenti autenticati"
