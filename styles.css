@@ -413,8 +413,12 @@ tr.status-confermato {
   background: #fff4c2;
 }
 
+.reminder-urgent {
+  background: #ffd6d6;
+}
+
 .reminder-overdue {
-  background: #ffe1e1;
+  background: #e8d6ff;
 }
 
 .reminder-done {

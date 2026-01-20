@@ -6,6 +6,7 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const PEOPLE = ["Alessio", "Davide", "Lorenzo"];
 
 const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let refreshTimer = null;
 
 const loginView = document.getElementById("loginView");
 const appView = document.getElementById("appView");
@@ -88,6 +89,7 @@ function getReminderClass(reminder) {
   if (reminder.stato === "completato") return "reminder-done";
   const diff = dayDifference(reminder.data_scadenza);
   if (diff < 0) return "reminder-overdue";
+  if (diff <= 1) return "reminder-urgent";
   if (diff <= 3) return "reminder-soon";
   return "reminder-far";
 }
@@ -181,6 +183,10 @@ async function handleLogout() {
   PEOPLE.forEach((person) => {
     columns[person].innerHTML = "";
   });
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
 }
 
 async function handleReminderSubmit(event) {
@@ -240,6 +246,12 @@ client.auth.onAuthStateChange((_event, session) => {
   setView(session);
   if (session) {
     loadReminders();
+    if (!refreshTimer) {
+      refreshTimer = setInterval(loadReminders, 300000);
+    }
+  } else if (refreshTimer) {
+    clearInterval(refreshTimer);
+    refreshTimer = null;
   }
 });
 
@@ -250,4 +262,7 @@ const { data } = await client.auth.getSession();
 setView(data.session);
 if (data.session) {
   await loadReminders();
+  if (!refreshTimer) {
+    refreshTimer = setInterval(loadReminders, 300000);
+  }
 }
