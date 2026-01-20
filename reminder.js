@@ -186,7 +186,10 @@ async function loadReminders() {
   const { data, error } = await client
     .from("reminders")
     .select("id, testo, data_scadenza, ora_scadenza, stato, assegnato_a, created_at")
-    .order("data_scadenza", { ascending: true });
+    .order("data_scadenza", { ascending: true })
+    .order("ora_scadenza", { ascending: true, nullsFirst: true })
+    .order("created_at", { ascending: true })
+    .order("id", { ascending: true });
 
   if (error) {
     return;
@@ -197,21 +200,7 @@ async function loadReminders() {
     doneColumns[person].innerHTML = "";
   });
 
-  const sorted = (data || []).slice().sort((a, b) => {
-    const dueA = getDueDate(a);
-    const dueB = getDueDate(b);
-    if (!dueA && !dueB) return 0;
-    if (!dueA) return 1;
-    if (!dueB) return -1;
-    const timeDiff = dueA.getTime() - dueB.getTime();
-    if (timeDiff !== 0) return timeDiff;
-    const createdA = a.created_at ? new Date(a.created_at).getTime() : 0;
-    const createdB = b.created_at ? new Date(b.created_at).getTime() : 0;
-    if (createdA !== createdB) return createdA - createdB;
-    return String(a.id).localeCompare(String(b.id));
-  });
-
-  sorted.forEach((reminder) => {
+  (data || []).forEach((reminder) => {
     const targetColumns = reminder.stato === "completato" ? doneColumns : columns;
     const column = targetColumns[reminder.assegnato_a];
     if (column) {
