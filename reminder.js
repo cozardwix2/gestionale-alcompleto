@@ -36,6 +36,12 @@ const columns = {
   Lorenzo: document.getElementById("colLorenzo"),
 };
 
+const doneColumns = {
+  Alessio: document.getElementById("colAlessioDone"),
+  Davide: document.getElementById("colDavideDone"),
+  Lorenzo: document.getElementById("colLorenzoDone"),
+};
+
 function prettyName(email) {
   if (!email) return "";
   const base = email.split("@")[0] || email;
@@ -179,7 +185,7 @@ function renderReminder(reminder) {
 async function loadReminders() {
   const { data, error } = await client
     .from("reminders")
-    .select("id, testo, data_scadenza, ora_scadenza, stato, assegnato_a")
+    .select("id, testo, data_scadenza, ora_scadenza, stato, assegnato_a, created_at")
     .order("data_scadenza", { ascending: true });
 
   if (error) {
@@ -188,6 +194,7 @@ async function loadReminders() {
 
   PEOPLE.forEach((person) => {
     columns[person].innerHTML = "";
+    doneColumns[person].innerHTML = "";
   });
 
   const sorted = (data || []).slice().sort((a, b) => {
@@ -196,11 +203,17 @@ async function loadReminders() {
     if (!dueA && !dueB) return 0;
     if (!dueA) return 1;
     if (!dueB) return -1;
-    return dueA.getTime() - dueB.getTime();
+    const timeDiff = dueA.getTime() - dueB.getTime();
+    if (timeDiff !== 0) return timeDiff;
+    const createdA = a.created_at ? new Date(a.created_at).getTime() : 0;
+    const createdB = b.created_at ? new Date(b.created_at).getTime() : 0;
+    if (createdA !== createdB) return createdA - createdB;
+    return String(a.id).localeCompare(String(b.id));
   });
 
   sorted.forEach((reminder) => {
-    const column = columns[reminder.assegnato_a];
+    const targetColumns = reminder.stato === "completato" ? doneColumns : columns;
+    const column = targetColumns[reminder.assegnato_a];
     if (column) {
       column.append(renderReminder(reminder));
     }
@@ -225,6 +238,7 @@ async function handleLogout() {
   await client.auth.signOut();
   PEOPLE.forEach((person) => {
     columns[person].innerHTML = "";
+    doneColumns[person].innerHTML = "";
   });
   if (refreshTimer) {
     clearInterval(refreshTimer);
