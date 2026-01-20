@@ -85,7 +85,7 @@ function getDueDate(reminder) {
   if (reminder.ora_scadenza) {
     return new Date(`${date}T${reminder.ora_scadenza}`);
   }
-  return new Date(`${date}T23:59:59`);
+  return new Date(`${date}T00:00:00`);
 }
 
 function getReminderClass(reminder) {
