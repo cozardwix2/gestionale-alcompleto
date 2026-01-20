@@ -33,6 +33,7 @@ const filtroPersona = document.getElementById("filtroPersona");
 const filtroStato = document.getElementById("filtroStato");
 const searchInput = document.getElementById("searchInput");
 const caricatoDaSelect = document.getElementById("caricatoDa");
+const themeToggle = document.getElementById("themeToggle");
 const editingId = document.getElementById("editingId");
 const saveLeadBtn = document.getElementById("saveLeadBtn");
 const cancelEditBtn = document.getElementById("cancelEditBtn");
@@ -59,6 +60,24 @@ function setView(session) {
     appView.hidden = true;
     userLabel.textContent = "Non autenticato";
   }
+}
+
+function applyTheme(value) {
+  const isDark = value === "dark";
+  document.body.classList.toggle("theme-dark", isDark);
+  if (themeToggle) {
+    themeToggle.textContent = isDark ? "Giorno" : "Notte";
+  }
+}
+
+if (themeToggle) {
+  const storedTheme = localStorage.getItem("theme") || "light";
+  applyTheme(storedTheme);
+  themeToggle.addEventListener("click", () => {
+    const next = document.body.classList.contains("theme-dark") ? "light" : "dark";
+    localStorage.setItem("theme", next);
+    applyTheme(next);
+  });
 }
 
 async function handleLogin(event) {

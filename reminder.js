@@ -28,6 +28,7 @@ const saveReminderBtn = document.getElementById("saveReminderBtn");
 const cancelReminderBtn = document.getElementById("cancelReminderBtn");
 const deleteReminderBtn = document.getElementById("deleteReminderBtn");
 const reminderError = document.getElementById("reminderError");
+const themeToggle = document.getElementById("themeToggle");
 
 const columns = {
   Alessio: document.getElementById("colAlessio"),
@@ -51,6 +52,24 @@ function setView(session) {
     appView.hidden = true;
     userLabel.textContent = "Non autenticato";
   }
+}
+
+function applyTheme(value) {
+  const isDark = value === "dark";
+  document.body.classList.toggle("theme-dark", isDark);
+  if (themeToggle) {
+    themeToggle.textContent = isDark ? "Giorno" : "Notte";
+  }
+}
+
+if (themeToggle) {
+  const storedTheme = localStorage.getItem("theme") || "light";
+  applyTheme(storedTheme);
+  themeToggle.addEventListener("click", () => {
+    const next = document.body.classList.contains("theme-dark") ? "light" : "dark";
+    localStorage.setItem("theme", next);
+    applyTheme(next);
+  });
 }
 
 function openModal(reminder = null) {

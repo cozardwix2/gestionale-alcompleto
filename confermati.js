@@ -29,6 +29,7 @@ const logoutBtn = document.getElementById("logoutBtn");
 const leadGrid = document.getElementById("leadGrid");
 const emptyState = document.getElementById("emptyState");
 const searchConfermati = document.getElementById("searchConfermati");
+const themeToggle = document.getElementById("themeToggle");
 
 function prettyName(email) {
   if (!email) return "";
@@ -46,6 +47,24 @@ function setView(session) {
     appView.hidden = true;
     userLabel.textContent = "Non autenticato";
   }
+}
+
+function applyTheme(value) {
+  const isDark = value === "dark";
+  document.body.classList.toggle("theme-dark", isDark);
+  if (themeToggle) {
+    themeToggle.textContent = isDark ? "Giorno" : "Notte";
+  }
+}
+
+if (themeToggle) {
+  const storedTheme = localStorage.getItem("theme") || "light";
+  applyTheme(storedTheme);
+  themeToggle.addEventListener("click", () => {
+    const next = document.body.classList.contains("theme-dark") ? "light" : "dark";
+    localStorage.setItem("theme", next);
+    applyTheme(next);
+  });
 }
 
 async function handleLogin(event) {
