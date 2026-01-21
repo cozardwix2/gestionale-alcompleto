@@ -368,6 +368,11 @@ textarea:focus {
   cursor: pointer;
 }
 
+body.theme-dark .danger-btn {
+  border-color: #cf6b6b;
+  color: #ffb3b3;
+}
+
 .muted {
   color: var(--muted);
 }

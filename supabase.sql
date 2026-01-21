@@ -23,6 +23,7 @@ create table if not exists public.leads (
   data_report_incassi date,
   invio_contratto text,
   ultima_data_contatto date,
+  compensi_calcolati text,
   info_extra text,
   report_mesi jsonb not null default '{}'::jsonb,
   report_mesi_statistiche jsonb not null default '{}'::jsonb,

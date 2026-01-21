@@ -223,6 +223,11 @@ function renderCard(lead) {
     lead.ultima_data_contatto,
     "date"
   );
+  const compensiCalcolati = createSelect("Compensi calcolati su", lead.compensi_calcolati, [
+    { value: "", label: "Seleziona" },
+    { value: "lordo", label: "Lordo" },
+    { value: "netto", label: "Netto" },
+  ]);
   const infoBox = createTextarea("Info", lead.info_extra);
 
   const breakLine = document.createElement("div");
@@ -248,6 +253,7 @@ function renderCard(lead) {
     reportIncassiInviato,
     dataProssimoReportIncassi,
     ultimaDataContatto,
+    compensiCalcolati,
   ].forEach((item) => form.append(item.wrapper));
 
   const panel = document.createElement("div");
@@ -337,6 +343,7 @@ function renderCard(lead) {
     [dataProssimoReportIncassi.input, "data_prossimo_report_incassi"],
     [invioContratto.select, "invio_contratto"],
     [ultimaDataContatto.input, "ultima_data_contatto"],
+    [compensiCalcolati.select, "compensi_calcolati"],
     [infoBox.textarea, "info_extra"],
   ];
 
@@ -415,7 +422,7 @@ async function loadConfermati() {
   const { data, error } = await client
     .from("leads")
     .select(
-      "id, nome_struttura, telefono, caricato_da, data_attivazione, tipo_tariffa, report_statistiche, report_incassi, report_statistiche_inviato, report_incassi_inviato, data_prossimo_report_statistiche, data_prossimo_report_incassi, invio_contratto, ultima_data_contatto, info_extra, report_mesi_statistiche, report_mesi_incassi"
+      "id, nome_struttura, telefono, caricato_da, data_attivazione, tipo_tariffa, report_statistiche, report_incassi, report_statistiche_inviato, report_incassi_inviato, data_prossimo_report_statistiche, data_prossimo_report_incassi, invio_contratto, ultima_data_contatto, compensi_calcolati, info_extra, report_mesi_statistiche, report_mesi_incassi"
     )
     .eq("status", "confermato")
     .order("created_at", { ascending: false });
