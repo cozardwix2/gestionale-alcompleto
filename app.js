@@ -88,7 +88,7 @@ async function handleLogin(event) {
 
   const { error } = await client.auth.signInWithPassword({ email, password });
   if (error) {
-    loginError.textContent = "Credenziali non valide.";
+    loginError.textContent = `Accesso non riuscito: ${error.message || "riprova più tardi."}`;
     return;
   }
   await loadLeads();
