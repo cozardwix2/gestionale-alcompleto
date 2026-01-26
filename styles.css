@@ -381,6 +381,7 @@ body.theme-dark .danger-btn {
   color: #b02b2b;
   min-height: 20px;
   margin: 0;
+  display: block;
 }
 
 table {
